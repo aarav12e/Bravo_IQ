@@ -1,9 +1,9 @@
-import exporess from 'express';
+import express from 'express';
 import path from 'path';
 import { ENV } from './lib/env.js';
 
 
-const app = exporess();
+const app = express();
 
 const __dirname= path.resolve();
 
@@ -13,15 +13,16 @@ console.log(ENV.DB_URL)
 app.get('/health', (req, res) => {
     res.status(200).json({ message: 'API is running..' });
 });
-app.get('/health', (req, res) => {
-    res.status(200).json({ message: 'this is boobs endpoint' });
+app.get('/books', (req, res) => {
+    res.status(200).json({ message: 'this is books endpoint' });
 });
 
 //make our app ready for development
 if(ENV.NODE_ENV === 'production'){
-    app.use(exporess.static(path.join(__dirname, '../frontend/build')));
+    app.use(express.static(path.join(__dirname, '../frontend/dist'))
+);
     app.get("/{*any}", (req, res) => {
-        res.sendFile(path.join(__dirname, '../frontend/build/index.html'));
+        res.sendFile(path.join(__dirname, '../frontend/dist/index.html'));
     });
 
 }
